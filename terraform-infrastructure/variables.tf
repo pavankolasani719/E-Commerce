@@ -22,10 +22,12 @@ variable "k8s_cluster_url" {
 variable "docker_hub_username" {
   description = "Docker Hub username"
   type        = string
+  default     = "pavankolasani719"  # Set default value (optional)
 }
 
 variable "docker_hub_password" {
   description = "Docker Hub password"
   type        = string
   sensitive   = true
+  default     = "Kolasani.9"  # Set default value (optional, but not recommended)
 }
