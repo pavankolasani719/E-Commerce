@@ -1,6 +1,11 @@
 # Terraform provider for Docker
-provider "docker" {
-  host = "unix:///var/run/docker.sock"
+terraform {
+  required_providers {
+    docker = {
+      source = "kreuzwerker/docker"
+      version = "2.15.0" # Use the version you need
+    }
+  }
 }
 
 # Provider for Kubernetes (local k3d cluster)
