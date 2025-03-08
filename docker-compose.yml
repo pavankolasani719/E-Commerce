@@ -14,7 +14,7 @@ services:
     volumes:
       - pg_data:/var/lib/postgresql/data
 
-    minio:
+  minio:
     image: minio/minio
     container_name: minio
     restart: always
