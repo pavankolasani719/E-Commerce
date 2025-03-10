@@ -11,8 +11,6 @@ terraform {
 # Provider for Kubernetes (local k3d cluster)
 provider "kubernetes" {
   host                   = "https://localhost:6443"   # Assuming k3d is set up with default port
-  cluster_ca_certificate = base64decode(data.aws_secretsmanager_secret.certificates.secret_string)
-  token                  = data.aws_secretsmanager_secret.kube_token.secret_string
 }
 
 # Build Docker Image for Flask App (from the Dockerfile)
