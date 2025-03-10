@@ -2,7 +2,7 @@
 terraform {
   required_providers {
     docker = {
-      source = "kreuzwerker/docker"
+      source  = "kreuzwerker/docker"
       version = "2.15.0"
     }
   }
@@ -12,14 +12,14 @@ terraform {
 resource "docker_image" "flask_app" {
   name = "yourusername/flask-ecommerce:latest"
   build {
-    path      = "${path.module}/frontend"  # Path to the Docker build context
-    dockerfile = "${path.module}/frontend/Dockerfile"  # Path to your Dockerfile
+    path       = "${path.module}/frontend"
+    dockerfile = "${path.module}/frontend/Dockerfile"
   }
 }
 
 # Docker Registry Credentials (optional, if you need to authenticate to Docker Hub)
 resource "docker_registry_image" "flask_app" {
-  name     = docker_image.flask_app.name
+  name       = docker_image.flask_app.name
   image_id = docker_image.flask_app.image_id
 }
 
@@ -42,7 +42,7 @@ resource "kubernetes_deployment" "flask_deployment" {
     template {
       metadata {
         labels = {
-          app = "flask-app"
+        app = "flask-app"
         }
       }
 
