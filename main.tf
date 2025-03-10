@@ -16,8 +16,8 @@ terraform {
 resource "docker_image" "flask_app" {
   name = "pavankolasani719/flask-ecommerce:latest"
   build {
-    path       = "frontend"
-    dockerfile = "frontend/Dockerfile"
+    path       = "/Users/viratkolasani/E-Commerce/frontend"
+    dockerfile = " /Users/viratkolasani/E-Commerce/frontend/Dockerfile "
   }
 }
 
