@@ -3,23 +3,24 @@ terraform {
   required_providers {
     docker = {
       source = "kreuzwerker/docker"
-      version = "2.15.0" # Use the version you need
+      version = "2.15.0"
     }
   }
-}
-
-# Provider for Kubernetes (local k3d cluster)
-provider "kubernetes" {
-  host                   = "https://localhost:6443"   # Assuming k3d is set up with default port
 }
 
 # Build Docker Image for Flask App (from the Dockerfile)
 resource "docker_image" "flask_app" {
   name = "yourusername/flask-ecommerce:latest"
   build {
-    context    = "${path.module}/frontend"  # Assuming frontend has a Dockerfile
-    dockerfile = "${path.module}/frontend/Dockerfile"
+    path      = "${path.module}/frontend"  # Path to the Docker build context
+    dockerfile = "${path.module}/frontend/Dockerfile"  # Path to your Dockerfile
   }
+}
+
+# Docker Registry Credentials (optional, if you need to authenticate to Docker Hub)
+resource "docker_registry_image" "flask_app" {
+  name     = docker_image.flask_app.name
+  image_id = docker_image.flask_app.image_id
 }
 
 # Kubernetes Deployment for Flask App
@@ -75,10 +76,4 @@ resource "kubernetes_service" "flask_service" {
       target_port = 5000
     }
   }
-}
-
-# Docker Hub Credentials (optional, if you need to authenticate to Docker Hub)
-resource "docker_registry_image" "flask_app" {
-  name      = "yourusername/flask-ecommerce:latest"
-  image_url = docker_image.flask_app.image_id
 }
