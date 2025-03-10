@@ -5,12 +5,16 @@ terraform {
       source  = "kreuzwerker/docker"
       version = "2.15.0"
     }
+    kubernetes = {
+      source = "hashicorp/kubernetes"
+      version = "~> 2.0"
+    }
   }
 }
 
 # Build Docker Image for Flask App (from the Dockerfile)
 resource "docker_image" "flask_app" {
-  name = "yourusername/flask-ecommerce:latest"
+  name = "pavankolasani719/flask-ecommerce:latest"
   build {
     path       = "${path.module}/frontend"
     dockerfile = "${path.module}/frontend/Dockerfile"
@@ -19,8 +23,7 @@ resource "docker_image" "flask_app" {
 
 # Docker Registry Credentials (optional, if you need to authenticate to Docker Hub)
 resource "docker_registry_image" "flask_app" {
-  name       = docker_image.flask_app.name
-  image_id = docker_image.flask_app.image_id
+  name = docker_image.flask_app.name
 }
 
 # Kubernetes Deployment for Flask App
@@ -42,14 +45,14 @@ resource "kubernetes_deployment" "flask_deployment" {
     template {
       metadata {
         labels = {
-        app = "flask-app"
+          app = "flask-app"
         }
       }
 
       spec {
         container {
           name  = "flask-container"
-          image = docker_image.flask_app.image_id
+          image = docker_image.flask_app.name
           ports {
             container_port = 5000
           }
