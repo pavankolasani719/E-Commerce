@@ -13,10 +13,6 @@ services:
       - "5432:5432"
     volumes:
       - pg_data:/var/lib/postgresql/data
-      version: '3.8'
-
-services:
-  # ... your other services ...
 
   pgadmin:
     image: dpage/pgadmin4
@@ -26,13 +22,9 @@ services:
       PGADMIN_DEFAULT_EMAIL: "pgadmin@pgadmin.org"
       PGADMIN_DEFAULT_PASSWORD: "admin"
     depends_on:
-      - postgresql
+      - postgres
     networks:
       - your_network_name
-
-networks:
-  your_network_name:
-    # ... network configuration ...
 
   minio:
     image: minio/minio
@@ -48,7 +40,6 @@ networks:
     volumes:
       - minio_data:/data
 
-
   jenkins:
     image: jenkins/jenkins:lts
     container_name: jenkins
@@ -63,3 +54,7 @@ volumes:
   pg_data:
   minio_data:
   jenkins_home:
+
+networks:
+  your_network_name:
+    # Add network configuration if needed
