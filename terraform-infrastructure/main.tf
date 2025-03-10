@@ -6,7 +6,7 @@ terraform {
       version = "2.15.0"
     }
     kubernetes = {
-      source = "hashicorp/kubernetes"
+      source  = "hashicorp/kubernetes"
       version = "~> 2.0"
     }
   }
@@ -16,8 +16,8 @@ terraform {
 resource "docker_image" "flask_app" {
   name = "pavankolasani719/flask-ecommerce:latest"
   build {
-    path       = "${path.module}/frontend"
-    dockerfile = "${path.module}/frontend/Dockerfile"
+    path       = "../frontend"
+    dockerfile = "../frontend/Dockerfile"
   }
 }
 
