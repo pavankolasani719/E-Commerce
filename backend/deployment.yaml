@@ -15,6 +15,7 @@ spec:
       containers:
       - name: ecommerce-backend
         image: pavankolasani719/ecommerce-backend:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 5000
 ---
