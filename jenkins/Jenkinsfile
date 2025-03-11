@@ -1,0 +1,31 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKERHUB_USER = 'your-dockerhub-username'
+        DOCKERHUB_PASS = 'your-dockerhub-password'
+    }
+
+    stages {
+        stage('Build') {
+            steps {
+                sh 'docker build -t backend:latest backend/'
+            }
+        }
+
+        stage('Push to DockerHub') {
+            steps {
+                sh 'echo $DOCKERHUB_PASS | docker login -u $DOCKERHUB_USER --password-stdin'
+                sh 'docker tag backend:latest $DOCKERHUB_USER/backend:latest'
+                sh 'docker push $DOCKERHUB_USER/backend:latest'
+            }
+        }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                sh 'kubectl apply -f infrastructure/k8s/backend-deploy.yaml'
+                sh 'kubectl apply -f infrastructure/k8s/backend-service.yaml'
+            }
+        }
+    }
+}
