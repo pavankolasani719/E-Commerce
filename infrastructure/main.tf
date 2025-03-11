@@ -14,7 +14,7 @@ resource "kubernetes_deployment" "backend" {
       metadata { labels = { app = "backend" } }
       spec {
         container {
-          image = "your-dockerhub/backend:latest"
+          image = "pavankolasani719/backend:latest"
           name  = "backend"
           port {
             container_port = 5000
