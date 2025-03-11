@@ -1,6 +1,7 @@
 version: '3.8'
 
 services:
+  # PostgreSQL Database
   postgres:
     image: postgres:14
     container_name: postgres_db
@@ -13,7 +14,10 @@ services:
       - "5432:5432"
     volumes:
       - pg_data:/var/lib/postgresql/data
+    networks:
+      - your_network_name
 
+  # PGAdmin for DB Management
   pgadmin:
     image: dpage/pgadmin4
     ports:
@@ -26,6 +30,7 @@ services:
     networks:
       - your_network_name
 
+  # MinIO for Object Storage
   minio:
     image: minio/minio
     container_name: minio
@@ -39,7 +44,10 @@ services:
       - "9001:9001"
     volumes:
       - minio_data:/data
+    networks:
+      - your_network_name
 
+  # Jenkins for CI/CD
   jenkins:
     image: jenkins/jenkins:lts
     container_name: jenkins
@@ -49,12 +57,69 @@ services:
       - "50000:50000"
     volumes:
       - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock  # Allows Jenkins to interact with Docker
+    networks:
+      - your_network_name
+
+  # Backend (Flask API)
+  backend:
+    build: ./backend
+    container_name: backend
+    restart: always
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: postgresql://admin:password@postgres/ecommerce
+    ports:
+      - "5000:5000"
+    networks:
+      - your_network_name
+
+  # Frontend (React)
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+    networks:
+      - your_network_name
+
+  # K3s Lightweight Kubernetes (for local deployments)
+  k3d:
+    image: rancher/k3s:v1.27.3-k3s1
+    container_name: k3d-cluster
+    privileged: true
+    restart: always
+    ports:
+      - "6443:6443"
+    command: ["server", "--tls-san=0.0.0.0"]
+    volumes:
+      - k3d_data:/var/lib/rancher/k3s
+    networks:
+      - your_network_name
+
+  # Local Docker Registry (for custom images)
+  registry:
+    image: registry:2
+    container_name: docker_registry
+    restart: always
+    ports:
+      - "5001:5000"
+    volumes:
+      - registry_data:/var/lib/registry
+    networks:
+      - your_network_name
 
 volumes:
   pg_data:
   minio_data:
   jenkins_home:
+  k3d_data:
+  registry_data:
 
 networks:
   your_network_name:
-    # Add network configuration if needed
+    driver: bridge
