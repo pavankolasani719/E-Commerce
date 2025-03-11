@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: ecommerce-backend
-        image: yourusername/ecommerce-backend:latest
+        image: pavankolasani719/ecommerce-backend:latest
         ports:
         - containerPort: 5000
 ---
