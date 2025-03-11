@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        DOCKERHUB_USER = 'your-dockerhub-username'
-        DOCKERHUB_PASS = 'your-dockerhub-password'
+        DOCKERHUB_USER = 'your-dockerhub-pavankolasani719'
+        DOCKERHUB_PASS = 'your-dockerhub-Kolasani.9'
     }
 
     stages {
