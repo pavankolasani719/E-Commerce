@@ -71,7 +71,7 @@ services:
     environment:
       DATABASE_URL: postgresql://admin:password@postgres/ecommerce
     ports:
-      - "5000:5000"
+      - "5000:5000"   # Expose port 5000 for local access
     networks:
       - your_network_name
 
