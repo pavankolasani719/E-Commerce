@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ecommerce-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ecommerce-backend
+  template:
+    metadata:
+      labels:
+        app: ecommerce-backend
+    spec:
+      containers:
+        - name: ecommerce-backend
+          image: pavankolasani719/ecommerce-backend:latest  # Replace with your backend image
+          ports:
+            - containerPort: 5000  # Replace with the port your backend is running on
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ecommerce-backend
+spec:
+  selector:
+    app: ecommerce-backend
+  ports:
+    - protocol: TCP
+      port: 5000  # This is the service port to expose
+      targetPort: 5000  # The actual container port
+  type: ClusterIP  # Use NodePort or LoadBalancer if you need to expose outside the cluster
