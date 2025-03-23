@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ecommerce-frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ecommerce-frontend
+  template:
+    metadata:
+      labels:
+        app: ecommerce-frontend
+    spec:
+      containers:
+        - name: ecommerce-frontend
+          image: pavankolasani719/ecommerce-frontend:latest  # Replace with your frontend image
+          ports:
+            - containerPort: 80  # The port the frontend will expose
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ecommerce-frontend
+spec:
+  selector:
+    app: ecommerce-frontend
+  ports:
+    - protocol: TCP
+      port: 80  # This is the service port to expose
+      targetPort: 80  # The actual container port
+  type: NodePort  # Expose the service outside the cluster via a node port
