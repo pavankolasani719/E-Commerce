@@ -30,3 +30,32 @@ pipeline {
     }
 }
 // Jenkinsfile for backend deployment
+// This file defines the CI/CD pipeline for the backend service using Jenkins.
+stages {
+    stage('Build') {
+        steps {
+            script {
+                // Build the Docker image for the backend service
+                sh 'docker build -t backend:latest .'
+            }
+        }
+    }
+
+    stage('Test') {
+        steps {
+            script {
+                // Run tests for the backend service
+                sh 'docker run --rm backend:latest pytest tests/'
+            }
+        }
+    }
+
+    stage('Deploy') {
+        steps {
+            script {
+                // Deploy the backend service to Kubernetes
+                sh 'kubectl apply -f k8s/backend-deployment.yaml'
+            }
+        }
+    }
+}
