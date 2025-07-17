@@ -7,3 +7,11 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 from app import routes, models
+
+@app.before_first_request
+def create_tables():
+    db.create_all()
+    print("Tables created successfully.")           
+
+
+        
